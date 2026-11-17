@@ -1,12 +1,14 @@
+// Build.gradle.kts (Module: app)
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.devtools.ksp") version "2.2.10-2.0.2" // Plugin xử lý Annotation
 }
 
 android {
-    buildFeatures{
+    buildFeatures {
         viewBinding = true
     }
-    namespace = "vn.udn.ute.lecture9"
+    namespace = "com.example.studentmvvm"
     compileSdk {
         version = release(37)
     }
@@ -34,12 +36,37 @@ android {
     }
 }
 
+ksp {
+    arg("room.generateKotlin", "true")
+}
+
 dependencies {
+    val roomVersion = "2.7.0"
+    val lifecycleVersion = "2.7.0"
+
+    // Room Persistence Library
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion") // Hỗ trợ Coroutines & Flow
+    ksp("androidx.room:room-compiler:$roomVersion") // KSP Compiler
+
+    // Lifecycle ViewModel & LiveData KTX
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
+
+    // UI & Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("com.google.android.material:material:1.11.0")
+
+    // Retrofit 2 & Gson (Phần 4: Kết Nối Mạng Với Retrofit 2)
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
