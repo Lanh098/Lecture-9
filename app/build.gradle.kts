@@ -3,6 +3,9 @@ plugins {
 }
 
 android {
+    buildFeatures{
+        viewBinding = true
+    }
     namespace = "vn.udn.ute.lecture9"
     compileSdk {
         version = release(37)
